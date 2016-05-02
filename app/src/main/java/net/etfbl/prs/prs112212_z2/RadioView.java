@@ -17,6 +17,14 @@ import android.view.ViewGroup;
  */
 public class RadioView extends ViewGroup {
     private static final String TAG = "RadioView";
+    private static final int scaleLeft = 160;
+    private static final int scaleTop = 180;
+    private static final int scaleRight = 454;
+    private static final int scaleBottom = 289;
+    private static final int knobLeft = 192;
+    private static final int knobTop = 321;
+    private static final int knobRight = 423;
+    private static final int knobBottom = 380;
     private Bitmap mBitmap;
     private Rect mSrcRect;
     private TunerKnob mKnob;
@@ -70,19 +78,20 @@ public class RadioView extends ViewGroup {
             height = srcHeight;
         }
 
+
         scaleRect.set(
-                ScaleUtil.scale(width, srcWidth, 160),//left
-                ScaleUtil.scale(height, srcHeight, 180),//top
-                ScaleUtil.scale(width, srcWidth, 454),//
-                ScaleUtil.scale(height, srcHeight, 289)
+                ScaleUtil.scale(width, srcWidth, scaleLeft),//left
+                ScaleUtil.scale(height, srcHeight, scaleTop),//top
+                ScaleUtil.scale(width, srcWidth, scaleRight),//
+                ScaleUtil.scale(height, srcHeight, scaleBottom)
         );
 
 
         knobRect.set(
-                ScaleUtil.scale(width, srcWidth, 192),//left
-                ScaleUtil.scale(height, srcHeight, 321),//top
-                ScaleUtil.scale(width, srcWidth, 423),//
-                ScaleUtil.scale(height, srcHeight, 380)
+                ScaleUtil.scale(width, srcWidth, knobLeft),//left
+                ScaleUtil.scale(height, srcHeight, knobTop),//top
+                ScaleUtil.scale(width, srcWidth, knobRight),//
+                ScaleUtil.scale(height, srcHeight, knobBottom)
         );
 
 
@@ -128,7 +137,6 @@ public class RadioView extends ViewGroup {
         Log.d(TAG, "dispatchDraw width:" + canvas.getWidth() + " height:" + canvas.getHeight());
 
         Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
-        //canvas.drawRect(dst, new Paint(Color.GRAY));
         canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.TRANSPARENT));
         super.dispatchDraw(canvas);
     }
