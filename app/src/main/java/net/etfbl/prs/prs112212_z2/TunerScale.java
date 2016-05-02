@@ -19,6 +19,7 @@ public class TunerScale extends View {
     private Bitmap mBitmap;
     private Rect mSrcRect;
     private static final String TAG="TunerScale";
+    private Rect dstRect;
 
     public TunerScale(Context context) {
         super(context);
@@ -88,5 +89,9 @@ public class TunerScale extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         Log.d(TAG, "onLayout(changed:" + changed + " l:" + left + " t:" + top + " r:" + right + " b:" + bottom + ")");
+    }
+
+    public void setDstRect(Rect dstRect) {
+        this.dstRect = dstRect;
     }
 }

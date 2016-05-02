@@ -21,6 +21,8 @@ public class RadioView extends ViewGroup {
     private Rect mSrcRect;
     private TunerKnob mKnob;
     private TunerScale mScale;
+    private Rect knobRect = new Rect();
+    private Rect scaleRect = new Rect();
 
     public RadioView(Context context) {
         super(context);
@@ -67,11 +69,22 @@ public class RadioView extends ViewGroup {
             width = srcWidth;
             height = srcHeight;
         }
-        for (int i = 0; i < getChildCount(); i++) {
-            View v = getChildAt(i);
 
-            v.measure(widthMeasureSpec, heightMeasureSpec);
-        }
+        scaleRect.set(
+                ScaleUtil.scale(width, srcWidth, 160),//left
+                ScaleUtil.scale(height, srcHeight, 180),//top
+                ScaleUtil.scale(width, srcWidth, 454),//
+                ScaleUtil.scale(height, srcHeight, 289)
+        );
+
+
+        knobRect.set(
+                ScaleUtil.scale(width, srcWidth, 192),//left
+                ScaleUtil.scale(height, srcHeight, 321),//top
+                ScaleUtil.scale(width, srcWidth, 423),//
+                ScaleUtil.scale(height, srcHeight, 380)
+        );
+
 
         Log.d(TAG, "width: " + width + " height" + height);
         setMeasuredDimension(width, height);
@@ -88,13 +101,12 @@ public class RadioView extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
 
-            int childWidth = child.getMeasuredWidth();
-            int childHeight = child.getMeasuredHeight();
             if (child instanceof TunerScale) {
 
-                child.layout(100, 100, 200, 200);
+                child.layout(scaleRect.left, scaleRect.top, scaleRect.right, scaleRect.bottom);
+            } else {
+                child.layout(knobRect.left, knobRect.top, knobRect.right, knobRect.bottom);
             }
-            else child.layout(0,0,childWidth,childHeight);
 
         }
 
@@ -114,10 +126,11 @@ public class RadioView extends ViewGroup {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         Log.d(TAG, "dispatchDraw width:" + canvas.getWidth() + " height:" + canvas.getHeight());
-        super.dispatchDraw(canvas);
-        Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-//        canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.TRANSPARENT));
+        Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+        //canvas.drawRect(dst, new Paint(Color.GRAY));
+        canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.TRANSPARENT));
+        super.dispatchDraw(canvas);
     }
 
     public void setTunerScale(TunerScale scale) {

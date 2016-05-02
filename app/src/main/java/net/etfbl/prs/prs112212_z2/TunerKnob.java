@@ -22,6 +22,9 @@ public class TunerKnob extends View {
     private Rect mSrcRotatingRect;
     private Bitmap staticPart;
     private Rect mSrcStaticRect;
+    private Paint paint = new Paint(Color.GRAY);
+    ;
+    private Rect dst = new Rect();
 
     public TunerKnob(Context context) {
         super(context);
@@ -40,18 +43,18 @@ public class TunerKnob extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.d(TAG,"onDraw");
+        Log.d(TAG, "onDraw");
         super.onDraw(canvas);
-        Rect dst=new Rect(0,0,canvas.getWidth(),canvas.getHeight());
-        canvas.drawBitmap(rotatingPart, mSrcRotatingRect,dst,new Paint(Color.TRANSPARENT));
-        canvas.drawBitmap(rotatingPart,mSrcStaticRect,dst,new Paint(Color.TRANSPARENT));
+        dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
+        canvas.drawBitmap(rotatingPart, mSrcStaticRect, dst, paint);
+        canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst, paint);
     }
 
-    private  void setBitmap(){
+    private void setBitmap() {
         rotatingPart = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.knob_rotating_part);
-        staticPart =BitmapFactory.decodeResource(getContext().getResources(), R.drawable.knob_static_part);
-        mSrcRotatingRect = new Rect(0,0, rotatingPart.getWidth(), rotatingPart.getHeight());
-        mSrcStaticRect=new Rect(0,0,staticPart.getWidth(),staticPart.getHeight());
+        staticPart = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.knob_static_part);
+        mSrcRotatingRect = new Rect(0, 0, rotatingPart.getWidth(), rotatingPart.getHeight());
+        mSrcStaticRect = new Rect(0, 0, staticPart.getWidth(), staticPart.getHeight());
     }
 
     @Override
