@@ -17,20 +17,6 @@ import android.view.ViewGroup;
  */
 public class RadioView extends ViewGroup {
     private static final String TAG = "RadioView";
-    /**
-     * These are used for computing child frames based on their gravity.
-     */
-    private final Rect mTmpContainerRect = new Rect();
-    private final Rect mTmpChildRect = new Rect();
-    private float mOverlap = 0.5f; //percent
-    /**
-     * The amount of space used by children in the left gutter.
-     */
-    private int mLeftWidth;
-    /**
-     * The amount of space used by children in the right gutter.
-     */
-    private int mRightWidth;
     private Bitmap mBitmap;
     private Rect mSrcRect;
     private TunerKnob mKnob;
@@ -83,6 +69,7 @@ public class RadioView extends ViewGroup {
         }
         for (int i = 0; i < getChildCount(); i++) {
             View v = getChildAt(i);
+
             v.measure(widthMeasureSpec, heightMeasureSpec);
         }
 
@@ -103,11 +90,10 @@ public class RadioView extends ViewGroup {
 
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
+            if (child instanceof TunerScale) {
+                child.layout(100, 100, 200, 200);
+            }
 
-            child.layout((int) (i * (1 - mOverlap) * childWidth),
-                    (getMeasuredHeight() - childHeight) / 2,
-                    (int) ((1 + i * (1 - mOverlap)) * childWidth),
-                    (getMeasuredHeight() - childHeight) / 2 + childHeight);
         }
 
     }
@@ -129,7 +115,7 @@ public class RadioView extends ViewGroup {
         super.dispatchDraw(canvas);
         Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.GRAY));
+        canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.TRANSPARENT));
     }
 
     public void setTunerScale(TunerScale scale) {

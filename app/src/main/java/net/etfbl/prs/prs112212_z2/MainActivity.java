@@ -8,11 +8,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        RadioView radioView=new RadioView(this);
+//        setContentView(radioView);
+//        radioView.setTunerScale(new TunerScale(this));
+//        radioView.setTunerKnob(new TunerKnob(this));
         setContentView(R.layout.activity_main);
-        RadioView radioView=(RadioView) findViewById(R.id.radio);
-        TunerScale scale=(TunerScale) findViewById(R.id.scale);
-        TunerKnob knob=(TunerKnob) findViewById(R.id.knob);
-        radioView.setTunerScale(scale);
-        radioView.setTunerKnob(knob);
+
     }
 }

@@ -77,7 +77,7 @@ public class TunerScale extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+      //  super.onDraw(canvas);
         Rect dst=new Rect(0,0,canvas.getWidth(),canvas.getHeight());
         canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.GRAY));
 
