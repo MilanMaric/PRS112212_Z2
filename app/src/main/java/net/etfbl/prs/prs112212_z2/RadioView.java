@@ -81,9 +81,14 @@ public class RadioView extends ViewGroup {
             width = srcWidth;
             height = srcHeight;
         }
+        for (int i = 0; i < getChildCount(); i++) {
+            View v = getChildAt(i);
+            v.measure(widthMeasureSpec, heightMeasureSpec);
+        }
 
-        Log.d(TAG, "widht: " + width + " height" + height);
+        Log.d(TAG, "width: " + width + " height" + height);
         setMeasuredDimension(width, height);
+
     }
 
     /**

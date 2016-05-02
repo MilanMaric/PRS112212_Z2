@@ -47,7 +47,7 @@ public class TunerScale extends View {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
-
+        Log.d(TAG,"onMeasure(width:"+width+",height"+height+"\n\t)");
 
         int srcWidth = mBitmap.getWidth();
         int srcHeight = mBitmap.getHeight();
