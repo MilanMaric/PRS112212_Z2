@@ -91,8 +91,10 @@ public class RadioView extends ViewGroup {
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
             if (child instanceof TunerScale) {
+
                 child.layout(100, 100, 200, 200);
             }
+            else child.layout(0,0,childWidth,childHeight);
 
         }
 
@@ -115,7 +117,7 @@ public class RadioView extends ViewGroup {
         super.dispatchDraw(canvas);
         Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.TRANSPARENT));
+//        canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.TRANSPARENT));
     }
 
     public void setTunerScale(TunerScale scale) {
