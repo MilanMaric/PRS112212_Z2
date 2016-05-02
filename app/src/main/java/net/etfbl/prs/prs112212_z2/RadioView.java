@@ -36,6 +36,8 @@ public class RadioView extends ViewGroup {
     private final Rect mTmpChildRect = new Rect();
     private Bitmap mBitmap;
     private Rect mSrcRect;
+    private TunerKnob mKnob;
+    private TunerScale mScale;
 
     public RadioView(Context context) {
         super(context);
@@ -82,7 +84,8 @@ public class RadioView extends ViewGroup {
             width = srcWidth;
             height = srcHeight;
         }
-        Log.d(TAG,"widht: "+width+" height"+height);
+        
+        Log.d(TAG, "widht: " + width + " height" + height);
         setMeasuredDimension(width, height);
     }
 
@@ -91,7 +94,7 @@ public class RadioView extends ViewGroup {
      */
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
+        Log.d(TAG, "onLayout(changed:"+changed+" l:"+l+" t:"+t+" r:"+r+" b:"+b+")");
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -125,5 +128,13 @@ public class RadioView extends ViewGroup {
         Rect dst=new Rect(0,0,canvas.getWidth(),canvas.getHeight());
 
         canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.GRAY));
+    }
+    
+    public void setTunerScale(TunerScale scale){
+        mScale=scale;
+    }
+    
+    public void setTunerKnob(TunerKnob knob){
+        mKnob=knob;
     }
 }

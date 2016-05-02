@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -17,6 +18,7 @@ public class TunerScale extends View {
 
     private Bitmap mBitmap;
     private Rect mSrcRect;
+    private static final String TAG="TunerScale";
 
     public TunerScale(Context context) {
         super(context);
@@ -40,6 +42,7 @@ public class TunerScale extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.d(TAG,"onMeasure("+widthMeasureSpec+","+heightMeasureSpec+")");
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
@@ -80,4 +83,9 @@ public class TunerScale extends View {
 
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        Log.d(TAG, "onLayout(changed:" + changed + " l:" + left + " t:" + top + " r:" + right + " b:" + bottom + ")");
+    }
 }
