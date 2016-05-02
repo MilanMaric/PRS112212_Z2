@@ -21,7 +21,7 @@ public class TunerScale extends View {
     private Rect mSrcRect;
     private Rect dstRect;
 
-    private float freq = 100;
+    private float freq = 110;
 
     public TunerScale(Context context) {
         super(context);
@@ -84,7 +84,10 @@ public class TunerScale extends View {
         Log.d(TAG, "onDraw" + canvas.getWidth() + " ," + canvas.getHeight());
         Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
         canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.GRAY));
-
+        float pos=(mBitmap.getWidth() - 120) * (freq-80) / 30;
+        int x = ScaleUtil.scale(canvas.getWidth(), mBitmap.getWidth(), 60+(int)pos);
+        Log.d(TAG, "x:" + x +" pos:"+pos);
+        canvas.drawLine(x, 0, x, canvas.getHeight(), new Paint(Color.RED));
     }
 
     @Override
@@ -103,9 +106,12 @@ public class TunerScale extends View {
     }
 
     public void setFreq(float freq) {
-        if (freq > 88.0 && freq < 110.0)
+        if (freq >= 80.0 && freq <= 110.0) {
             this.freq = freq;
+            Log.d(TAG, "frequency set to: " + freq);
+            invalidate();
+        }
     }
-    
+
 
 }
