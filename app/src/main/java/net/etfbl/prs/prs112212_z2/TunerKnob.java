@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -73,10 +74,7 @@ public class TunerKnob extends View {
         return true;
     }
 
-    @Override
-    public void setOnGenericMotionListener(OnGenericMotionListener l) {
-        super.setOnGenericMotionListener(l);
-    }
+
 
     public void setOnTouchEventListener(OnTouchEventListener listener) {
         this.listener = listener;
