@@ -20,6 +20,8 @@ public class TunerScale extends View {
     private Bitmap mBitmap;
     private Rect mSrcRect;
     private Rect dstRect;
+    private Paint red=new Paint(Color.RED);
+
 
     private float freq = 110;
 
@@ -87,7 +89,7 @@ public class TunerScale extends View {
         float pos=(mBitmap.getWidth() - 120) * (freq-80) / 30;
         int x = ScaleUtil.scale(canvas.getWidth(), mBitmap.getWidth(), 60+(int)pos);
         Log.d(TAG, "x:" + x +" pos:"+pos);
-        canvas.drawLine(x, 0, x, canvas.getHeight(), new Paint(Color.RED));
+        canvas.drawLine(x, ScaleUtil.scale(canvas.getHeight(),mBitmap.getHeight(),20), x, canvas.getHeight()-ScaleUtil.scale(canvas.getHeight(), mBitmap.getHeight(), 20), red);
     }
 
     @Override
