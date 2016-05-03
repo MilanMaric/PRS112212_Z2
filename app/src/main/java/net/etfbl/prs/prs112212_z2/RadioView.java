@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.method.Touch;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -17,14 +18,9 @@ import android.view.ViewGroup;
  */
 public class RadioView extends ViewGroup {
     private static final String TAG = "RadioView";
-    private static final int scaleLeft = 160;
-    private static final int scaleTop = 180;
-    private static final int scaleRight = 454;
-    private static final int scaleBottom = 289;
-    private static final int knobLeft = 192;
-    private static final int knobTop = 321;
-    private static final int knobRight = 423;
-    private static final int knobBottom = 380;
+    private Rect originScaleRect;
+    private Rect originKnobRect;
+
     private Bitmap mBitmap;
     private Rect mSrcRect;
     private TunerKnob mKnob;
@@ -78,21 +74,25 @@ public class RadioView extends ViewGroup {
             height = srcHeight;
         }
 
+        if(originKnobRect==null|| originScaleRect==null){
+            Log.e(TAG,"please set the rects");
+            throw new RuntimeException("knobRect and scaleRect are not set!");
+        }else {
+            scaleRect.set(
+                    ScaleUtil.scale(width, srcWidth, originScaleRect.left),//left
+                    ScaleUtil.scale(height, srcHeight, originScaleRect.top),//top
+                    ScaleUtil.scale(width, srcWidth, originScaleRect.right),//
+                    ScaleUtil.scale(height, srcHeight, originScaleRect.bottom)
+            );
 
-        scaleRect.set(
-                ScaleUtil.scale(width, srcWidth, scaleLeft),//left
-                ScaleUtil.scale(height, srcHeight, scaleTop),//top
-                ScaleUtil.scale(width, srcWidth, scaleRight),//
-                ScaleUtil.scale(height, srcHeight, scaleBottom)
-        );
 
-
-        knobRect.set(
-                ScaleUtil.scale(width, srcWidth, knobLeft),//left
-                ScaleUtil.scale(height, srcHeight, knobTop),//top
-                ScaleUtil.scale(width, srcWidth, knobRight),//
-                ScaleUtil.scale(height, srcHeight, knobBottom)
-        );
+            knobRect.set(
+                    ScaleUtil.scale(width, srcWidth, originKnobRect.left),//left
+                    ScaleUtil.scale(height, srcHeight, originKnobRect.top),//top
+                    ScaleUtil.scale(width, srcWidth, originKnobRect.right),//
+                    ScaleUtil.scale(height, srcHeight, originKnobRect.bottom)
+            );
+        }
 
 
         Log.d(TAG, "width: " + width + " height" + height);
@@ -111,7 +111,6 @@ public class RadioView extends ViewGroup {
             View child = getChildAt(i);
 
             if (child instanceof TunerScale) {
-
                 child.layout(scaleRect.left, scaleRect.top, scaleRect.right, scaleRect.bottom);
             } else {
                 child.layout(knobRect.left, knobRect.top, knobRect.right, knobRect.bottom);
@@ -147,5 +146,13 @@ public class RadioView extends ViewGroup {
 
     public void setTunerKnob(TunerKnob knob) {
         mKnob = knob;
+    }
+
+    public void setScaleRect(Rect rect){
+        originScaleRect=rect;
+    }
+
+    public void setKnobRect(Rect rect){
+        originKnobRect=rect;
     }
 }
