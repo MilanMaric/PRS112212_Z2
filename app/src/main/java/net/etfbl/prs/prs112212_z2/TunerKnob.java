@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -23,7 +24,7 @@ public class TunerKnob extends View {
     private Bitmap staticPart;
     private Rect mSrcStaticRect;
     private Paint paint = new Paint(Color.GRAY);
-    ;
+    private OnTouchEventListener listener;
     private Rect dst = new Rect();
 
     public TunerKnob(Context context) {
@@ -60,6 +61,24 @@ public class TunerKnob extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (listener != null) {
+            listener.onTouchEvent(this, event);
+        }
+        return super.onTouchEvent(event);
+    }
+
+    public void setOnTouchEventListener(OnTouchEventListener listener) {
+        this.listener = listener;
+    }
+
+
+    public interface OnTouchEventListener {
+        void onTouchEvent(View v, MotionEvent event);
     }
 
 
