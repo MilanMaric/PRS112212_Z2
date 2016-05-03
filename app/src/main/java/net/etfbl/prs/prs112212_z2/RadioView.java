@@ -27,6 +27,7 @@ public class RadioView extends ViewGroup {
     private TunerScale mScale;
     private Rect knobRect = new Rect();
     private Rect scaleRect = new Rect();
+    private Rect dst=new Rect();
 
     public RadioView(Context context) {
         super(context);
@@ -135,7 +136,7 @@ public class RadioView extends ViewGroup {
     protected void dispatchDraw(Canvas canvas) {
         Log.d(TAG, "dispatchDraw width:" + canvas.getWidth() + " height:" + canvas.getHeight());
 
-        Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+        dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
         canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.TRANSPARENT));
         super.dispatchDraw(canvas);
     }

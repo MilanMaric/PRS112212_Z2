@@ -7,9 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.view.ScaleGestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 /**
@@ -32,6 +35,7 @@ public class TunerKnob extends View {
     private OnTouchEventListener listener;
     private Rect dst = new Rect();
     private int x = 0;
+
 
 
     public TunerKnob(Context context) {
@@ -72,15 +76,19 @@ public class TunerKnob extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-
     @Override
-    public boolean onDragEvent(DragEvent event) {
-        if (listener != null) {
-            listener.onTouchEvent(this, event);
-        }
-        return true;
+    public boolean onGenericMotionEvent(MotionEvent event) {
+
+        return super.onGenericMotionEvent(event);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(listener!=null){
+            listener.onTouchEvent(this,event);
+        }
+        return super.onTouchEvent(event);
+    }
 
     public void setOnTouchEventListener(OnTouchEventListener listener) {
         this.listener = listener;
@@ -88,8 +96,10 @@ public class TunerKnob extends View {
 
 
     public interface OnTouchEventListener {
-        void onTouchEvent(View v, DragEvent event);
+        void onTouchEvent(View v, MotionEvent event);
     }
+
+
 
 
 }
