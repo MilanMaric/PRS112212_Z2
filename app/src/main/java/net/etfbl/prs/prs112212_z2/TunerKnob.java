@@ -9,7 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.DragEvent;
 import android.view.View;
 
 /**
@@ -26,6 +26,7 @@ public class TunerKnob extends View {
     private Paint paint = new Paint(Color.GRAY);
     private OnTouchEventListener listener;
     private Rect dst = new Rect();
+
 
     public TunerKnob(Context context) {
         super(context);
@@ -47,8 +48,8 @@ public class TunerKnob extends View {
         Log.d(TAG, "onDraw");
         super.onDraw(canvas);
         dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
-        canvas.drawBitmap(rotatingPart, mSrcStaticRect, dst, paint);
         canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst, paint);
+        canvas.drawBitmap(staticPart, mSrcStaticRect, dst, paint);
     }
 
     private void setBitmap() {
@@ -65,11 +66,16 @@ public class TunerKnob extends View {
 
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onDragEvent(DragEvent event) {
         if (listener != null) {
             listener.onTouchEvent(this, event);
         }
-        return super.onTouchEvent(event);
+        return true;
+    }
+
+    @Override
+    public void setOnGenericMotionListener(OnGenericMotionListener l) {
+        super.setOnGenericMotionListener(l);
     }
 
     public void setOnTouchEventListener(OnTouchEventListener listener) {
@@ -78,7 +84,7 @@ public class TunerKnob extends View {
 
 
     public interface OnTouchEventListener {
-        void onTouchEvent(View v, MotionEvent event);
+        void onTouchEvent(View v, DragEvent event);
     }
 
 
