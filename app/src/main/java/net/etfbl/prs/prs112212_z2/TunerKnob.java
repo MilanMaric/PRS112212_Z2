@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -20,13 +19,19 @@ public class TunerKnob extends View {
 
 
     private static final String TAG = "TunerKnob";
+    private static final int leftRotatingMargin = 14;
+    private static final int topRotatingMargin = 5;
+    private static final int rightRotatingMargin = 14;
+    private static final int bottomRotatingMargin = 4;
     private Bitmap rotatingPart;
     private Rect mSrcRotatingRect;
+    private Rect dst1 = new Rect();
     private Bitmap staticPart;
     private Rect mSrcStaticRect;
     private Paint paint = new Paint(Color.GRAY);
     private OnTouchEventListener listener;
     private Rect dst = new Rect();
+    private int x = 0;
 
 
     public TunerKnob(Context context) {
@@ -49,7 +54,9 @@ public class TunerKnob extends View {
         Log.d(TAG, "onDraw");
         super.onDraw(canvas);
         dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
-        canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst, paint);
+        mSrcRotatingRect.set(x, 0, canvas.getWidth(), rotatingPart.getHeight());
+        dst1.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), leftRotatingMargin), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), topRotatingMargin), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), rightRotatingMargin), dst.bottom - ScaleUtil.scale(canvas.getHeight(),staticPart.getHeight(),bottomRotatingMargin));
+        canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst1, paint);
         canvas.drawBitmap(staticPart, mSrcStaticRect, dst, paint);
     }
 
@@ -73,7 +80,6 @@ public class TunerKnob extends View {
         }
         return true;
     }
-
 
 
     public void setOnTouchEventListener(OnTouchEventListener listener) {
