@@ -7,12 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v4.view.ScaleGestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 
 /**
@@ -32,9 +29,10 @@ public class TunerKnob extends View {
     private Bitmap staticPart;
     private Rect mSrcStaticRect;
     private Paint paint = new Paint(Color.GRAY);
-    private OnTouchEventListener listener;
+    private MyOnTouchEventListener listener;
     private Rect dst = new Rect();
     private int x = 0;
+    private int index=0;
 
 
 
@@ -58,7 +56,7 @@ public class TunerKnob extends View {
         Log.d(TAG, "onDraw");
         super.onDraw(canvas);
         dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
-        mSrcRotatingRect.set(x, 0, canvas.getWidth(), rotatingPart.getHeight());
+        mSrcRotatingRect.set(x, 0,x+ canvas.getWidth(), rotatingPart.getHeight());
         dst1.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), leftRotatingMargin), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), topRotatingMargin), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), rightRotatingMargin), dst.bottom - ScaleUtil.scale(canvas.getHeight(),staticPart.getHeight(),bottomRotatingMargin));
         canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst1, paint);
         canvas.drawBitmap(staticPart, mSrcStaticRect, dst, paint);
@@ -76,28 +74,40 @@ public class TunerKnob extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    @Override
-    public boolean onGenericMotionEvent(MotionEvent event) {
-
-        return super.onGenericMotionEvent(event);
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(listener!=null){
-            listener.onTouchEvent(this,event);
+        if(event.getAction()==MotionEvent.ACTION_MOVE){
+            int size=event.getHistorySize();
+            if(size>0) {
+                float locx = event.getX();
+                float lastX = event.getHistoricalX(size - 1);
+                float move = locx - lastX;
+                Log.d(TAG,"move: "+move);
+                if (x + move > 0 && x + move + mSrcRotatingRect.width() < rotatingPart.getWidth()) {
+                    if(listener!=null){
+                        listener.onTouchEvent(this,event,move/rotatingPart.getWidth());
+                    }
+                    x += (int) locx - lastX;
+
+                    invalidate();
+
+                }
+                index++;
+            }
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 
-    public void setOnTouchEventListener(OnTouchEventListener listener) {
+    public void setOnTouchEventListener(MyOnTouchEventListener listener) {
         this.listener = listener;
     }
 
 
-    public interface OnTouchEventListener {
-        void onTouchEvent(View v, MotionEvent event);
+    public interface MyOnTouchEventListener {
+        boolean onTouchEvent(View v, MotionEvent event,float diff);
     }
+
 
 
 

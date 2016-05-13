@@ -71,12 +71,15 @@ public class TunerScale extends View {
         return freq;
     }
 
-    public void setFreq(float freq) {
+    public boolean setFreq(float freq) {
         if (freq >= 80.0 && freq <= 110.0) {
             this.freq = freq;
             Log.d(TAG, "frequency set to: " + freq);
             invalidate();
+            return true;
         }
+        return false;
+
     }
 
 

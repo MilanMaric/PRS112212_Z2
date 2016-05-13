@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.text.method.Touch;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -23,11 +22,9 @@ public class RadioView extends ViewGroup {
 
     private Bitmap mBitmap;
     private Rect mSrcRect;
-    private TunerKnob mKnob;
-    private TunerScale mScale;
     private Rect knobRect = new Rect();
     private Rect scaleRect = new Rect();
-    private Rect dst=new Rect();
+    private Rect dst = new Rect();
 
     public RadioView(Context context) {
         super(context);
@@ -75,10 +72,10 @@ public class RadioView extends ViewGroup {
             height = srcHeight;
         }
 
-        if(originKnobRect==null|| originScaleRect==null){
-            Log.e(TAG,"please set the rects");
+        if (originKnobRect == null || originScaleRect == null) {
+            Log.e(TAG, "please set the rects");
             throw new RuntimeException("knobRect and scaleRect are not set!");
-        }else {
+        } else {
             scaleRect.set(
                     ScaleUtil.scale(width, srcWidth, originScaleRect.left),//left
                     ScaleUtil.scale(height, srcHeight, originScaleRect.top),//top
@@ -101,9 +98,6 @@ public class RadioView extends ViewGroup {
 
     }
 
-    /**
-     * Position all children within this layout.
-     */
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         Log.d(TAG, "onLayout(changed:" + changed + " l:" + l + " t:" + t + " r:" + r + " b:" + b + ")");
@@ -113,7 +107,8 @@ public class RadioView extends ViewGroup {
 
             if (child instanceof TunerScale) {
                 child.layout(scaleRect.left, scaleRect.top, scaleRect.right, scaleRect.bottom);
-            } else {
+            }
+            if (child instanceof TunerKnob) {
                 child.layout(knobRect.left, knobRect.top, knobRect.right, knobRect.bottom);
             }
 
@@ -141,19 +136,12 @@ public class RadioView extends ViewGroup {
         super.dispatchDraw(canvas);
     }
 
-    public void setTunerScale(TunerScale scale) {
-        mScale = scale;
+
+    public void setScaleRect(Rect rect) {
+        originScaleRect = rect;
     }
 
-    public void setTunerKnob(TunerKnob knob) {
-        mKnob = knob;
-    }
-
-    public void setScaleRect(Rect rect){
-        originScaleRect=rect;
-    }
-
-    public void setKnobRect(Rect rect){
-        originKnobRect=rect;
+    public void setKnobRect(Rect rect) {
+        originKnobRect = rect;
     }
 }

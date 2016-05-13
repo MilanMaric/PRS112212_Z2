@@ -2,9 +2,7 @@ package net.etfbl.prs.prs112212_z2;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -30,32 +28,16 @@ public class MainActivity extends AppCompatActivity {
         radioView.setKnobRect(new Rect(knobLeft, knobTop, knobRight, knobBottom));
         final TunerScale tunerScale = (TunerScale) findViewById(R.id.scale);
         final TunerKnob tunerKnob = (TunerKnob) findViewById(R.id.knob);
-        radioView.setTunerScale(tunerScale);
-        radioView.setTunerKnob(tunerKnob);
+
         if (tunerScale != null)
             tunerScale.setFreq(80);
         if (tunerKnob != null)
-            tunerKnob.setOnTouchEventListener(new TunerKnob.OnTouchEventListener() {
+            tunerKnob.setOnTouchEventListener(new TunerKnob.MyOnTouchEventListener() {
                 @Override
-                public void onTouchEvent(View v, MotionEvent event) {
-                    Log.d(TAG,"onTouchEvent");
-                    switch (event.getAction()){
-                        case MotionEvent.ACTION_DOWN:
-                            x=event.getX();
-                            Log.d(TAG,"x:"+x);
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            Log.e(TAG, "old x:" + x);
-                            float dx=event.getX();
-                            Log.d(TAG,"new x"+dx);
-                            dx-=x;
-                            Log.d(TAG,"diff"+dx);
-                            break;
-                        case MotionEvent.AXIS_HSCROLL:
-                            Log.d(TAG,"HSCOLL");
-                            break;
-                    }
-
+                public boolean onTouchEvent(View v, MotionEvent event, float diff) {
+                    float freq = tunerScale.getFreq();
+                    freq = freq + diff*30;
+                    return tunerScale.setFreq(freq);
                 }
             });
 
