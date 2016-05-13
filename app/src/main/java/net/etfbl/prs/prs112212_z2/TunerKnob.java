@@ -32,8 +32,7 @@ public class TunerKnob extends View {
     private MyOnTouchEventListener listener;
     private Rect dst = new Rect();
     private int x = 0;
-    private int index=0;
-
+    private int index = 0;
 
 
     public TunerKnob(Context context) {
@@ -56,8 +55,8 @@ public class TunerKnob extends View {
         Log.d(TAG, "onDraw");
         super.onDraw(canvas);
         dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
-        mSrcRotatingRect.set(x, 0,x+ canvas.getWidth(), rotatingPart.getHeight());
-        dst1.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), leftRotatingMargin), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), topRotatingMargin), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), rightRotatingMargin), dst.bottom - ScaleUtil.scale(canvas.getHeight(),staticPart.getHeight(),bottomRotatingMargin));
+        mSrcRotatingRect.set(x, 0, x + canvas.getWidth(), rotatingPart.getHeight());
+        dst1.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), leftRotatingMargin), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), topRotatingMargin), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), rightRotatingMargin), dst.bottom - ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), bottomRotatingMargin));
         canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst1, paint);
         canvas.drawBitmap(staticPart, mSrcStaticRect, dst, paint);
     }
@@ -77,23 +76,21 @@ public class TunerKnob extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction()==MotionEvent.ACTION_MOVE){
-            int size=event.getHistorySize();
-            if(size>0) {
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            int size = event.getHistorySize();
+            if (size > 0) {
                 float locx = event.getX();
                 float lastX = event.getHistoricalX(size - 1);
                 float move = locx - lastX;
-                Log.d(TAG,"move: "+move);
-                if (x + move > 0 && x + move + mSrcRotatingRect.width() < rotatingPart.getWidth()) {
-                    if(listener!=null){
-                        float percentage=move/(rotatingPart.getWidth()-mSrcRotatingRect.width());
-                        Log.d(TAG,"Precentage: "+percentage);
+                Log.d(TAG, "move: " + move);
+                if (x + move > 0 && x + move < dst1.width()) {
+                    if (listener != null) {
+                        float percentage = move / dst1.width();
+                        Log.d(TAG, "Precentage: " + percentage);
                         listener.onTouchEvent(this, event, percentage);
                     }
                     x += (int) locx - lastX;
-
                     invalidate();
-
                 }
                 index++;
             }
@@ -107,11 +104,8 @@ public class TunerKnob extends View {
 
 
     public interface MyOnTouchEventListener {
-        boolean onTouchEvent(View v, MotionEvent event,float diff);
+        boolean onTouchEvent(View v, MotionEvent event, float diff);
     }
-
-
-
 
 
 }
