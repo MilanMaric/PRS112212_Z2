@@ -86,7 +86,9 @@ public class TunerKnob extends View {
                 Log.d(TAG,"move: "+move);
                 if (x + move > 0 && x + move + mSrcRotatingRect.width() < rotatingPart.getWidth()) {
                     if(listener!=null){
-                        listener.onTouchEvent(this,event,move/rotatingPart.getWidth());
+                        float percentage=move/(rotatingPart.getWidth()-mSrcRotatingRect.width());
+                        Log.d(TAG,"Precentage: "+percentage);
+                        listener.onTouchEvent(this, event, percentage);
                     }
                     x += (int) locx - lastX;
 
