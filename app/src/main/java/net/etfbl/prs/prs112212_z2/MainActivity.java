@@ -35,9 +35,8 @@ public class MainActivity extends AppCompatActivity {
             tunerKnob.setOnTouchEventListener(new TunerKnob.MyOnTouchEventListener() {
                 @Override
                 public boolean onTouchEvent(View v, MotionEvent event, float diff) {
-                    float freq = tunerScale.getFreq();
-                    freq = freq + diff*30;
-                    return tunerScale.setFreq(freq);
+
+                    return tunerScale.setFreq(80+diff*30);
                 }
             });
 
