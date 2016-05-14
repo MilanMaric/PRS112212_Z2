@@ -1,3 +1,24 @@
+/****************************************************************************
+ * Copyright (c) 2016 Elektrotehnicki fakultet
+ * Patre 5, Banja Luka
+ * <p/>
+ * All Rights Reserved
+ * <p/>
+ * \file TunerKnob.java
+ * \brief
+ * This file contains a source code for TunerKnob - view that is rendered inside of RadioView,
+ * and it is used to make on move animation.
+ * <p/>
+ * Created on 27.04.2016
+ *
+ * @Author Milan Maric
+ * <p/>
+ * \notes
+ * <p/>
+ * <p/>
+ * \history
+ * <p/>
+ **********************************************************************/
 package net.etfbl.prs.prs112212_z2;
 
 import android.content.Context;
@@ -12,9 +33,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-/**
- * Created by milan on 1.5.2016.
- */
 public class TunerKnob extends View {
 
 
@@ -29,7 +47,7 @@ public class TunerKnob extends View {
     private Bitmap staticPart;
     private Rect mSrcStaticRect;
     private Paint paint = new Paint(Color.GRAY);
-    private MyOnTouchEventListener listener;
+    private TunerKnobOnTouchEventListener listener;
     private Rect dst = new Rect();
     private int x = 0;
     private int index = 0;
@@ -60,7 +78,9 @@ public class TunerKnob extends View {
         canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst1, paint);
         canvas.drawBitmap(staticPart, mSrcStaticRect, dst, paint);
     }
-
+    /**
+     * This method is used to set bitmap of images.
+     */
     private void setBitmap() {
         rotatingPart = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.knob_rotating_part);
         staticPart = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.knob_static_part);
@@ -93,12 +113,16 @@ public class TunerKnob extends View {
         return true;
     }
 
-    public void setOnTouchEventListener(MyOnTouchEventListener listener) {
+    /**
+     * This method is used to set custom touch listener
+     * @param listener instance of class that is implementing TunerKnobOnTouchEventListener
+     */
+    public void setOnTouchEventListener(TunerKnobOnTouchEventListener listener) {
         this.listener = listener;
     }
 
 
-    public interface MyOnTouchEventListener {
+    public interface TunerKnobOnTouchEventListener {
         boolean onTouchEvent(View v, MotionEvent event, float diff);
     }
 

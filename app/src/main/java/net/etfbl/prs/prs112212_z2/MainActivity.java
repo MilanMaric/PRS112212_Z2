@@ -1,3 +1,23 @@
+/****************************************************************************
+ * Copyright (c) 2016 Elektrotehnicki fakultet
+ * Patre 5, Banja Luka
+ * <p/>
+ * All Rights Reserved
+ * <p/>
+ * \file MainActivity.java
+ * \brief
+ * This file contains source code for MainActivity - activity that is launched at application startup.
+ * <p/>
+ * Created on 27.04.2016
+ *
+ * @Author Milan Maric
+ * <p/>
+ * \notes
+ * <p/>
+ * <p/>
+ * \history
+ * <p/>
+ **********************************************************************/
 package net.etfbl.prs.prs112212_z2;
 
 import android.graphics.Rect;
@@ -32,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if (tunerScale != null)
             tunerScale.setFreq(80);
         if (tunerKnob != null)
-            tunerKnob.setOnTouchEventListener(new TunerKnob.MyOnTouchEventListener() {
+            tunerKnob.setOnTouchEventListener(new TunerKnob.TunerKnobOnTouchEventListener() {
                 @Override
                 public boolean onTouchEvent(View v, MotionEvent event, float diff) {
 

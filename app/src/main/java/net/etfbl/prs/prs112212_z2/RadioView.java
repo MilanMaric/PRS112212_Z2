@@ -1,3 +1,24 @@
+/****************************************************************************
+ * Copyright (c) 2016 Elektrotehnicki fakultet
+ * Patre 5, Banja Luka
+ * <p/>
+ * All Rights Reserved
+ * <p/>
+ * \file RadioView.java
+ * \brief
+ * This file contains a source code for RadioView - view group that contains TunerScale and TunerKnob.
+ *
+ * <p/>
+ * Created on 27.04.2016
+ *
+ * @Author Milan Maric
+ * <p/>
+ * \notes
+ * <p/>
+ * <p/>
+ * \history
+ * <p/>
+ **********************************************************************/
 package net.etfbl.prs.prs112212_z2;
 
 import android.content.Context;
@@ -12,9 +33,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by milan on 28.4.2016.
- */
 public class RadioView extends ViewGroup {
     private static final String TAG = "RadioView";
     private Rect originScaleRect;
@@ -116,6 +134,9 @@ public class RadioView extends ViewGroup {
 
     }
 
+    /**
+     * This method is used to set bitmap of background.
+     */
     private void setBitmap() {
         mBitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.background);
         mSrcRect = new Rect(0, 0, mBitmap.getWidth(), mBitmap.getHeight());
@@ -136,11 +157,18 @@ public class RadioView extends ViewGroup {
         super.dispatchDraw(canvas);
     }
 
-
+    /**
+     * This method is used to set the position of tuner scale.
+     * @param rect Rect object that contains cords where tuner scale should be drawn.
+     */
     public void setScaleRect(Rect rect) {
         originScaleRect = rect;
     }
 
+    /**
+     * This method is used to set the position of tuner knob.
+     * @param rect Rect object that contains cords where tuner knob should be drawn.
+     */
     public void setKnobRect(Rect rect) {
         originKnobRect = rect;
     }
