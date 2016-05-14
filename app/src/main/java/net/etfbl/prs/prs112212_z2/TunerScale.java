@@ -35,19 +35,18 @@ import android.view.View;
 
 public class TunerScale extends View {
 
-    public static final int lineLength = 20;
+    public static final int LINE_LENGTH = 20;
+    public static final float MIN_FREQ = 80;
+    public static final float MAX_FREQ = 110;
+    public static final int FREQ_MARGIN_LEFT = 60;
+    private static final int FREQ_MARGIN_RIGHT = 66;
     private static final String TAG = "TunerScale";
-    public static final float minFreq = 80;
-    public static final float maxFreq = 110;
-    public static final int freqMargin = 60;
+
     private Bitmap mBitmap;
     private Rect mSrcRect;
     private Rect mDstRect = new Rect();
-
     private Paint red = new Paint(Color.RED);
     private Paint grey = new Paint(Color.GRAY);
-
-
     private float freq = 110;
 
 
@@ -82,12 +81,12 @@ public class TunerScale extends View {
         Log.d(TAG, "onDraw" + canvas.getWidth() + " ," + canvas.getHeight());
         mDstRect.set(0, 0, canvas.getWidth(), canvas.getHeight());
         canvas.drawBitmap(mBitmap, mSrcRect, mDstRect, grey);
-        float pos = (mBitmap.getWidth() - 2* freqMargin) * (freq - minFreq) / (maxFreq-minFreq);
-        int x = ScaleUtil.scale(canvas.getWidth(), mBitmap.getWidth(), freqMargin + (int) pos);
+        float pos = (mBitmap.getWidth() - (FREQ_MARGIN_LEFT + FREQ_MARGIN_RIGHT)) * (freq - MIN_FREQ) / (MAX_FREQ - MIN_FREQ);
+        int x = ScaleUtil.scale(canvas.getWidth(), mBitmap.getWidth(), FREQ_MARGIN_LEFT + (int) pos);
         Log.d(TAG, "x:" + x + " pos:" + pos);
-        canvas.drawLine(x, ScaleUtil.scale(canvas.getHeight(), mBitmap.getHeight(), lineLength),
+        canvas.drawLine(x, ScaleUtil.scale(canvas.getHeight(), mBitmap.getHeight(), LINE_LENGTH),
                 x,
-                canvas.getHeight() - ScaleUtil.scale(canvas.getHeight(),mBitmap.getHeight(), lineLength), red);
+                canvas.getHeight() - ScaleUtil.scale(canvas.getHeight(), mBitmap.getHeight(), LINE_LENGTH), red);
     }
 
     @Override
@@ -98,6 +97,7 @@ public class TunerScale extends View {
 
     /**
      * This is getter method that is used for getting value of current frequency
+     *
      * @return freq - current frequency
      */
     public float getFreq() {
@@ -106,11 +106,12 @@ public class TunerScale extends View {
 
     /**
      * This method is used to set current frequency
+     *
      * @param freq value of current frequency
      * @return true if frequency is set to new vale, false otherwise
      */
     public boolean setFreq(float freq) {
-        if (freq >= minFreq && freq <= maxFreq) {
+        if (freq >= MIN_FREQ && freq <= MAX_FREQ) {
             this.freq = freq;
             Log.d(TAG, "frequency set to: " + freq);
             invalidate();

@@ -37,10 +37,11 @@ public class TunerKnob extends View {
 
 
     private static final String TAG = "TunerKnob";
-    private static final int leftRotatingMargin = 14;
-    private static final int topRotatingMargin = 5;
-    private static final int rightRotatingMargin = 14;
-    private static final int bottomRotatingMargin = 4;
+    private static final int LEFT_ROTATING_MARGIN = 14;
+    private static final int TOP_ROTATING_MARGIN = 5;
+    private static final int RIGHT_ROTATING_MARGIN = 14;
+    private static final int BOTTOM_ROTATING_MARGIN = 4;
+    public static final int DYNAMIC_PART_SCALE_RATE = 5;
     private Bitmap rotatingPart;
     private Rect mSrcRotatingRect;
     private Rect dst1 = new Rect();
@@ -73,8 +74,8 @@ public class TunerKnob extends View {
         Log.d(TAG, "onDraw x:" + x);
         super.onDraw(canvas);
         dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
-        mSrcRotatingRect.set(x, 0, x + canvas.getWidth(), rotatingPart.getHeight());
-        dst1.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), leftRotatingMargin), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), topRotatingMargin), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), rightRotatingMargin), dst.bottom - ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), bottomRotatingMargin));
+        mSrcRotatingRect.set(x, 0, x+rotatingPart.getWidth()/ DYNAMIC_PART_SCALE_RATE, rotatingPart.getHeight());
+        dst1.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), LEFT_ROTATING_MARGIN), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), TOP_ROTATING_MARGIN), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), RIGHT_ROTATING_MARGIN), dst.bottom - ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), BOTTOM_ROTATING_MARGIN));
         canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst1, paint);
         canvas.drawBitmap(staticPart, mSrcStaticRect, dst, paint);
     }
@@ -96,11 +97,10 @@ public class TunerKnob extends View {
                 float locx = event.getX();
                 float lastX = event.getHistoricalX(size - 1);
                 float move = locx - lastX;
-                Log.d(TAG, "move: " + move);
-                Log.d(TAG, "x+move:" + (x + move));
-                if (x + move > 0 && x + move + dst1.width() < rotatingPart.getWidth()) {
+                Log.d(TAG, "x+move:" + (x + move)+" rotating part width: "+rotatingPart.getWidth());
+                if (x + move > 0 && x + move + mSrcRotatingRect.width() < rotatingPart.getWidth()) {
                     if (listener != null) {
-                        float percentage = (x+move) / (rotatingPart.getWidth()-dst1.width());
+                        float percentage = (x+move) / (rotatingPart.getWidth()-mSrcRotatingRect.width());
                         Log.d(TAG, "Precentage: " + percentage);
                         listener.onTouchEvent(this, event, percentage);
                     }

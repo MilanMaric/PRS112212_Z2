@@ -27,14 +27,14 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int scaleLeft = 160;
-    private static final int scaleTop = 180;
-    private static final int scaleRight = 454;
-    private static final int scaleBottom = 289;
-    private static final int knobLeft = 192;
-    private static final int knobTop = 321;
-    private static final int knobRight = 423;
-    private static final int knobBottom = 380;
+    private static final int SCALE_LEFT = 160;
+    private static final int SCALE_TOP = 180;
+    private static final int SCALE_RIGHT = 454;
+    private static final int SCALE_BOTTOM = 289;
+    private static final int KNOB_LEFT = 192;
+    private static final int KNOB_TOP = 321;
+    private static final int KNOB_RIGHT = 423;
+    private static final int KNOB_BOTTOM = 380;
     private static final String TAG = "MainActivity";
     private float x = 0;
 
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RadioView radioView = (RadioView) findViewById(R.id.radio);
-        radioView.setScaleRect(new Rect(scaleLeft, scaleTop, scaleRight, scaleBottom));
-        radioView.setKnobRect(new Rect(knobLeft, knobTop, knobRight, knobBottom));
+        radioView.setScaleRect(new Rect(SCALE_LEFT, SCALE_TOP, SCALE_RIGHT, SCALE_BOTTOM));
+        radioView.setKnobRect(new Rect(KNOB_LEFT, KNOB_TOP, KNOB_RIGHT, KNOB_BOTTOM));
         final TunerScale tunerScale = (TunerScale) findViewById(R.id.scale);
         final TunerKnob tunerKnob = (TunerKnob) findViewById(R.id.knob);
 
