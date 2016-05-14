@@ -52,7 +52,7 @@ public class TunerKnob extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.d(TAG, "onDraw");
+        Log.d(TAG, "onDraw x:"+x);
         super.onDraw(canvas);
         dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
         mSrcRotatingRect.set(x, 0, x + canvas.getWidth(), rotatingPart.getHeight());
@@ -69,12 +69,6 @@ public class TunerKnob extends View {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             int size = event.getHistorySize();
@@ -83,7 +77,7 @@ public class TunerKnob extends View {
                 float lastX = event.getHistoricalX(size - 1);
                 float move = locx - lastX;
                 Log.d(TAG, "move: " + move);
-                if (x + move > 0 && x + move < dst1.width()) {
+                if (x + move > 0 && x + move +dst1.width()< rotatingPart.getWidth()) {
                     if (listener != null) {
                         float percentage = move / dst1.width();
                         Log.d(TAG, "Precentage: " + percentage);

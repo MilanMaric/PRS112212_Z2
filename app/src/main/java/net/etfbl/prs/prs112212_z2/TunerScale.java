@@ -14,14 +14,18 @@ import android.view.View;
 
 public class TunerScale extends View {
 
+    public static final int lineLength = 20;
     private static final String TAG = "TunerScale";
     private Bitmap mBitmap;
     private Rect mSrcRect;
-    private Rect dstRect;
-    private Paint red=new Paint(Color.RED);
+    private Rect mDstRect = new Rect();
+
+    private Paint red = new Paint(Color.RED);
+    private Paint grey = new Paint(Color.GRAY);
 
 
     private float freq = 110;
+
 
     public TunerScale(Context context) {
         super(context);
@@ -48,22 +52,21 @@ public class TunerScale extends View {
     protected void onDraw(Canvas canvas) {
         //  super.onDraw(canvas);
         Log.d(TAG, "onDraw" + canvas.getWidth() + " ," + canvas.getHeight());
-        Rect dst = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
-        canvas.drawBitmap(mBitmap, mSrcRect, dst, new Paint(Color.GRAY));
-        float pos=(mBitmap.getWidth() - 120) * (freq-80) / 30;
-        int x = ScaleUtil.scale(canvas.getWidth(), mBitmap.getWidth(), 60+(int)pos);
-        Log.d(TAG, "x:" + x +" pos:"+pos);
-        canvas.drawLine(x, ScaleUtil.scale(canvas.getHeight(),mBitmap.getHeight(),20), x, canvas.getHeight()-ScaleUtil.scale(canvas.getHeight(), mBitmap.getHeight(), 20), red);
+        mDstRect.set(0, 0, canvas.getWidth(), canvas.getHeight());
+        canvas.drawBitmap(mBitmap, mSrcRect, mDstRect, grey);
+        float pos = (mBitmap.getWidth() - 120) * (freq - 80) / 30;
+        int x = ScaleUtil.scale(canvas.getWidth(), mBitmap.getWidth(), 60 + (int) pos);
+        Log.d(TAG, "x:" + x + " pos:" + pos);
+        canvas.drawLine(x, ScaleUtil.scale(canvas.getHeight(), mBitmap.getHeight(), lineLength),
+                x,
+                canvas.getHeight() - ScaleUtil.scale(canvas.getHeight(),
+                        mBitmap.getHeight(), 20), red);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         Log.d(TAG, "onLayout(changed:" + changed + " l:" + left + " t:" + top + " r:" + right + " b:" + bottom + ")");
-    }
-
-    public void setDstRect(Rect dstRect) {
-        this.dstRect = dstRect;
     }
 
 
