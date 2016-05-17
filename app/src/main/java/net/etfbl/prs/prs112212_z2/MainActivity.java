@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onTouchEvent(View v, MotionEvent event, float diff) {
 
-                    return tunerScale.setFreq(80+diff*30);
+                    return tunerScale.setFreq(TunerScale.MIN_FREQ + diff * (TunerScale.MAX_FREQ - TunerScale.MIN_FREQ));
                 }
             });
 

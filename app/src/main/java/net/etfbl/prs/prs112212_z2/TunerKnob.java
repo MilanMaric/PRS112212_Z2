@@ -36,22 +36,21 @@ import android.view.View;
 public class TunerKnob extends View {
 
 
+    public static final int ROTATING_PART_SCALE = 5;
     private static final String TAG = "TunerKnob";
     private static final int LEFT_ROTATING_MARGIN = 14;
     private static final int TOP_ROTATING_MARGIN = 5;
     private static final int RIGHT_ROTATING_MARGIN = 14;
     private static final int BOTTOM_ROTATING_MARGIN = 4;
-    public static final int DYNAMIC_PART_SCALE_RATE = 5;
     private Bitmap rotatingPart;
     private Rect mSrcRotatingRect;
-    private Rect dst1 = new Rect();
+    private Rect dstRotatingPart = new Rect();
     private Bitmap staticPart;
     private Rect mSrcStaticRect;
     private Paint paint = new Paint(Color.GRAY);
     private TunerKnobOnTouchEventListener listener;
     private Rect dst = new Rect();
     private int x = 0;
-    private int index = 0;
 
 
     public TunerKnob(Context context) {
@@ -72,13 +71,14 @@ public class TunerKnob extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         Log.d(TAG, "onDraw x:" + x);
-        super.onDraw(canvas);
+        //   super.onDraw(canvas);
         dst.set(0, 0, canvas.getWidth(), canvas.getHeight());
-        mSrcRotatingRect.set(x, 0, x+rotatingPart.getWidth()/ DYNAMIC_PART_SCALE_RATE, rotatingPart.getHeight());
-        dst1.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), LEFT_ROTATING_MARGIN), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), TOP_ROTATING_MARGIN), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), RIGHT_ROTATING_MARGIN), dst.bottom - ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), BOTTOM_ROTATING_MARGIN));
-        canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dst1, paint);
+        mSrcRotatingRect.set(x, 0, x + rotatingPart.getWidth() / ROTATING_PART_SCALE, rotatingPart.getHeight());
+        dstRotatingPart.set(dst.left + ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), LEFT_ROTATING_MARGIN), dst.top + ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), TOP_ROTATING_MARGIN), dst.right - ScaleUtil.scale(canvas.getWidth(), staticPart.getWidth(), RIGHT_ROTATING_MARGIN), dst.bottom - ScaleUtil.scale(canvas.getHeight(), staticPart.getHeight(), BOTTOM_ROTATING_MARGIN));
+        canvas.drawBitmap(rotatingPart, mSrcRotatingRect, dstRotatingPart, paint);
         canvas.drawBitmap(staticPart, mSrcStaticRect, dst, paint);
     }
+
     /**
      * This method is used to set bitmap of images.
      */
@@ -97,17 +97,17 @@ public class TunerKnob extends View {
                 float locx = event.getX();
                 float lastX = event.getHistoricalX(size - 1);
                 float move = locx - lastX;
-                Log.d(TAG, "x+move:" + (x + move)+" rotating part width: "+rotatingPart.getWidth());
+                Log.d(TAG, "x+move:" + (x + move) + " rotating part width: " + rotatingPart.getWidth());
                 if (x + move > 0 && x + move + mSrcRotatingRect.width() < rotatingPart.getWidth()) {
                     if (listener != null) {
-                        float percentage = (x+move) / (rotatingPart.getWidth()-mSrcRotatingRect.width());
+                        float percentage = (x + move) / (rotatingPart.getWidth() - mSrcRotatingRect.width());
                         Log.d(TAG, "Precentage: " + percentage);
                         listener.onTouchEvent(this, event, percentage);
                     }
                     x += (int) locx - lastX;
                     invalidate();
                 }
-                index++;
+
             }
         }
         return true;
@@ -115,6 +115,7 @@ public class TunerKnob extends View {
 
     /**
      * This method is used to set custom touch listener
+     *
      * @param listener instance of class that is implementing TunerKnobOnTouchEventListener
      */
     public void setOnTouchEventListener(TunerKnobOnTouchEventListener listener) {

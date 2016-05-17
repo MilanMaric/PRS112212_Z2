@@ -142,11 +142,6 @@ public class RadioView extends ViewGroup {
         mSrcRect = new Rect(0, 0, mBitmap.getWidth(), mBitmap.getHeight());
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        Log.d(TAG, "onDraw width:" + canvas.getWidth() + " height:" + canvas.getHeight());
-    }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
