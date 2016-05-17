@@ -41,6 +41,7 @@ public class TunerScale extends View {
     public static final int FREQ_MARGIN_LEFT = 60;
     private static final int FREQ_MARGIN_RIGHT = 66;
     private static final String TAG = "TunerScale";
+    public static final int STROKE_WIDTH = 5;
 
     private Bitmap mBitmap;
     private Rect mSrcRect;
@@ -72,6 +73,8 @@ public class TunerScale extends View {
     private void setBitmap() {
         mBitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.tuner_scale);
         mSrcRect = new Rect(0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+        red.setARGB(255,255,0,0);
+        red.setStrokeWidth(STROKE_WIDTH);
     }
 
 
